@@ -1,13 +1,11 @@
 package org.example.Streak;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.section.Section;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
@@ -19,10 +17,12 @@ import java.time.LocalDate;
 public class Streak {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     Long id;
     String name;
     @CreatedDate
     LocalDate startDate;
     int days;
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section;
 }
