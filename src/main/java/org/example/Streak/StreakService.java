@@ -1,4 +1,4 @@
-package org.example.streakTracker;
+package org.example.Streak;
 
 import org.springframework.stereotype.Service;
 
@@ -6,17 +6,17 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @Service
-public class StreakTrackerService {
-    StreakTrackerRepository streakTrackerRepository;
-    public StreakTrackerService(StreakTrackerRepository streakTrackerRepository) {
+public class StreakService {
+    StreakRepository streakTrackerRepository;
+    public StreakService(StreakRepository streakTrackerRepository) {
         this.streakTrackerRepository = streakTrackerRepository;
     }
 
-    StreakTracker getStreakTrackerByName(String name) {
+    Streak getStreakTrackerByName(String name) {
         return streakTrackerRepository.findByName(name);
     }
 
-    StreakTracker createStreakTracker(StreakTracker streakTracker) {
+    Streak createStreakTracker(Streak streakTracker) {
         streakTracker.streakLength = calculateStreakLength(streakTracker.getStreakCreated());
         return streakTrackerRepository.save(streakTracker);
     }
@@ -25,7 +25,7 @@ public class StreakTrackerService {
         return ChronoUnit.DAYS.between(streakCreated, LocalDate.now());
     }
 
-    public void resetStreak(StreakTracker streakTracker) {
+    public void resetStreak(Streak streakTracker) {
         streakTracker.setStreakCreated(LocalDate.now());
         streakTracker.setStreakLength(0L);
         streakTrackerRepository.save(streakTracker);
