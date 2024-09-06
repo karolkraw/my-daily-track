@@ -1,4 +1,4 @@
-package org.example.streakTracker;
+package org.example.Streak;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -16,13 +16,13 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class StreakTracker {
+public class Streak {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     Long id;
     String name;
     @CreatedDate
-    LocalDate streakCreated;
-    Long streakLength;
+    LocalDate startDate;
+    int days;
 }
