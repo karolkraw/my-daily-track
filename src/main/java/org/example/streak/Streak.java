@@ -1,6 +1,5 @@
-package org.example.Streak;
+package org.example.streak;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +18,6 @@ public class Streak {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String name;
-    @CreatedDate
     LocalDate startDate;
     int days;
     @ManyToOne
