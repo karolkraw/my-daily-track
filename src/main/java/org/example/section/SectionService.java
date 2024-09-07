@@ -11,11 +11,15 @@ public class SectionService {
         this.sectionRepository = sectionRepository;
     }
 
-    public Section createSection(Section section) {
+    Section createSection(Section section) {
         return sectionRepository.save(section);
     }
 
-    public List<Section> getAllSections() {
+    List<Section> getAllSections() {
         return sectionRepository.findAll();
+    }
+
+    public Section getSectionByName(String sectionName) {
+        return sectionRepository.findByName(sectionName);
     }
 }
