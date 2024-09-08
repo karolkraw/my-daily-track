@@ -10,6 +10,15 @@ CREATE TABLE IF NOT EXISTS streak (
     start_date DATE NOT NULL,
     days LONG NOT NULL,
     section_id INT,
-    CONSTRAINT fk_section FOREIGN KEY (section_id)
+    CONSTRAINT fk_section_streak FOREIGN KEY (section_id)
+            REFERENCES sections (id)
+);
+
+CREATE TABLE IF NOT EXISTS reflection (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    content TEXT NOT NULL,
+    created DATE NOT NULL UNIQUE,
+    section_id INT,
+    CONSTRAINT fk_section_reflection FOREIGN KEY (section_id)
             REFERENCES sections (id)
 );
