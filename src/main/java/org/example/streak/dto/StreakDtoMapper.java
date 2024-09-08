@@ -2,8 +2,6 @@ package org.example.streak.dto;
 
 import org.example.streak.Streak;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
