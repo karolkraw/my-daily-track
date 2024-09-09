@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "sections")
-public class Section  {
+public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,4 +21,6 @@ public class Section  {
     private LocalDateTime created;
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<Streak> streaks = new ArrayList<>();
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
+    private List<Streak> reflections = new ArrayList<>();
 }
