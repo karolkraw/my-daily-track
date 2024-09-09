@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +64,54 @@ public class ReflectionController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ReflectionDtoMapper.mapReflectionToDto(savedReflection));
+    }
+
+    @GetMapping("{sectionName}/by-date")
+    public ResponseEntity<ReflectionDto> getReflectionByDateSearch(@PathVariable String sectionName, @RequestParam("date") String date) {
+        Optional<Reflection> reflection = reflectionService.getReflectionByDate(sectionName, date);
+        if (reflection.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        ReflectionDto reflectionDto = mapReflectionToDto(reflection.get());
+        return ResponseEntity.ok(reflectionDto);
+    }
+
+    @GetMapping("{sectionName}/next")
+    public ResponseEntity<ReflectionDto> getNextReflection(@PathVariable String sectionName, @RequestParam("date") String date) {
+        Optional<Reflection> reflection = reflectionService.getNextReflection(sectionName, date);
+        if (reflection.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        ReflectionDto reflectionDto = mapReflectionToDto(reflection.get());
+        return ResponseEntity.ok(reflectionDto);
+    }
+
+    @GetMapping("{sectionName}/previous")
+    public ResponseEntity<ReflectionDto> getPreviousReflection(@PathVariable String sectionName, @RequestParam("date") String date) {
+        Optional<Reflection> reflection = reflectionService.getPreviousReflection(sectionName, date);
+        if (reflection.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        ReflectionDto reflectionDto = mapReflectionToDto(reflection.get());
+        return ResponseEntity.ok(reflectionDto);
+    }
+
+    @GetMapping("{sectionName}/next-batch")
+    public ResponseEntity<List<ReflectionDto>> getNextBatch(@PathVariable String sectionName, @RequestParam("date") String date, @RequestParam("limit") int limit) {
+        List<Reflection> reflections = reflectionService.getNextBatch(sectionName, date, limit);
+        List<ReflectionDto> reflectionsDto = reflections.stream().map(ReflectionDtoMapper::mapReflectionToDto).toList();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(reflectionsDto);
+    }
+
+    @GetMapping("{sectionName}/previous-batch")
+    public ResponseEntity<List<ReflectionDto>> getPreviousBatch(@PathVariable String sectionName, @RequestParam("date") String date, @RequestParam("limit") int limit) {
+        List<Reflection> reflections = reflectionService.getPreviousBatch(sectionName, date, limit);
+        List<ReflectionDto> reflectionsDto = reflections.stream().map(ReflectionDtoMapper::mapReflectionToDto).toList();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(reflectionsDto);
     }
 }
 

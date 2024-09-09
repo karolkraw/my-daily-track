@@ -36,6 +36,7 @@ public class ReflectionDtoMapper {
 
     public static LocalDate convertStringToLocalDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate.parse(date, formatter);
         return LocalDate.parse(date, formatter);
     }
 

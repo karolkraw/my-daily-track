@@ -40,10 +40,27 @@ public class ReflectionService {
 
     List<Reflection> getReflections(String sectionName, int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("created").descending());
-        Page<Reflection> reflectionPage = reflectionRepository.findBySection_Name(sectionName, pageable);
-        System.out.println("Total elements: " + reflectionPage.getTotalElements());
-        System.out.println("Total pages: " + reflectionPage.getTotalPages());
-        System.out.println("Current page size: " + reflectionPage.getSize());
+        Page<Reflection> reflectionPage = reflectionRepository.findBySection_NameAndCreatedNot(sectionName, LocalDate.now(), pageable);
         return reflectionPage.getContent();
+    }
+
+    Optional<Reflection> getNextReflection(String sectionName, String date) {
+        LocalDate created = convertStringToLocalDate(date);
+        return reflectionRepository.findFirstByCreatedAfterOrderByCreatedAsc(created);
+    }
+
+    Optional<Reflection> getPreviousReflection(String sectionName, String date) {
+        LocalDate created = convertStringToLocalDate(date);
+        return reflectionRepository.findFirstByCreatedBeforeOrderByCreatedDesc(created);
+    }
+
+    List<Reflection> getNextBatch(String sectionName, String date, int limit) {
+        LocalDate created = convertStringToLocalDate(date);
+        return reflectionRepository.findByCreatedAfterOrderByCreatedAsc(created, PageRequest.of(0, limit));
+    }
+
+    List<Reflection> getPreviousBatch(String sectionName, String date, int limit) {
+        LocalDate created = convertStringToLocalDate(date);
+        return reflectionRepository.findByCreatedBeforeOrderByCreatedDesc(created, PageRequest.of(0, limit));
     }
 }
