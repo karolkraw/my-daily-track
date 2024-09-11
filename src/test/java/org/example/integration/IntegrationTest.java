@@ -19,7 +19,6 @@ public class IntegrationTest {
     @Autowired
     ObjectMapper objectMapper;
 
-
   /*  @Test
     public void createStreak() throws Exception {
         Streak streakTracker = new Streak(1L, "new_streak", LocalDate.now().minusDays(4), 100L);
