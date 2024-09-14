@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "reflections")
 public class Reflection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

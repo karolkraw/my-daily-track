@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "streaks")
 public class Streak {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
