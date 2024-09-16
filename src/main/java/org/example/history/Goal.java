@@ -13,6 +13,7 @@ public class Goal {
     private String description;
     private String completedDate;
     private String createdDate;
+    private boolean isHistory = false;
 
     @OneToMany(mappedBy = "goal")
     private List<Subtask> subtasks;
