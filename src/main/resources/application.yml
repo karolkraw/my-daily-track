@@ -9,23 +9,10 @@ spring:
       mode: always
   kafka:
     consumer:
-      auto-offset-reset: earliest
-      group-id: history-service-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    topic:
-      goal-completed: completed-goals-topic
-    bootstrap-servers: localhost:9092
-    admin:
       topic:
-        replication-factor: '1' # copies of a topic's partitions across brokers
-        partitions: '3' # my_topic will have 3 partitions. If you are using multiple consumers in your history-service-group, Kafka will distribute the load across these partitions
-        name: my_topic
-      properties:
-        auto:
-          create:
-            topics:
-              enable: 'false'
+        goal-completed: completed-goals-topic
+      group-id: history-service-group
+    bootstrap-servers: localhost:9092
   jpa:
     properties:
       hibernate:
