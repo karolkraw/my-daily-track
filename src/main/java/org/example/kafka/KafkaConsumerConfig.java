@@ -31,11 +31,11 @@ public class KafkaConsumerConfig {
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class);
 
-        config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName()); // Delegate for value deserialization
-        config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class.getName()); // Delegate for key deserialization
+        config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+        config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class.getName());
 
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Message.class.getName()); // Default type for deserialization
+        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Message.class.getName());
 
         return new DefaultKafkaConsumerFactory<>(config);
     }
