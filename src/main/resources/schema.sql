@@ -28,7 +28,10 @@ CREATE TABLE IF NOT EXISTS goals (
     title varchar(255) NOT NULL,
     description text NOT NULL,
     completed_date date NOT NULL,
-    created_date date NOT NULL
+    created_date date NOT NULL,
+    section_id INT,
+    CONSTRAINT fk_section_goal FOREIGN KEY (section_id)
+                REFERENCES sections (id)
 );
 
 CREATE TABLE IF NOT EXISTS subtasks (
