@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 public class Subtask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
     private String title;
     private String description;
@@ -17,6 +16,5 @@ public class Subtask {
 
     @ManyToOne
     @JoinColumn(name = "goal_id")
-    @JsonIgnore
     private Goal goal;
 }
