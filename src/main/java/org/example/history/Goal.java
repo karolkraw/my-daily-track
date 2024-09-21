@@ -1,9 +1,9 @@
 package org.example.history;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.example.section.Section;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +11,6 @@ import java.util.List;
 public class Goal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     public Long id;
     public String title;
     public String description;
@@ -23,5 +22,5 @@ public class Goal {
     private Section section;
 
     @OneToMany(mappedBy = "goal")
-    public List<Subtask> subtasks;
+    public List<Subtask> subtasks = new ArrayList<>();
 }
