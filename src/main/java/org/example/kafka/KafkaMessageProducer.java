@@ -10,13 +10,13 @@ public class KafkaMessageProducer {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaMessageProducer.class);
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public KafkaMessageProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaMessageProducer(KafkaTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendGoals(String topic, String message) {
+    public void sendGoals(String topic, Object message) {
         try {
             kafkaTemplate.send(topic, message);
             logger.info("Sent message to topic {}: {}", topic, message);
