@@ -8,11 +8,13 @@ spring:
     init:
       mode: always
   kafka:
-    consumer:
-      topic:
-        goal-completed: completed-goals-topic
-        history: history-topic
-      group-id: history-service-group
+    consumers:
+      completed-goals-consumer:
+        topic: completed-goals-topic
+        group-id: completed-goals-group
+      history-consumer:
+        topic: history-topic
+        group-id: history-service-group
     bootstrap-servers: localhost:9092
   jpa:
     properties:
