@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.history.Goal;
 import org.example.history.GoalHistoryRepository;
+import org.example.history.dto.GoalDto;
+import org.example.history.dto.GoalMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,8 +28,8 @@ public class KafkaMessageConsumer {
         this.objectMapper = objectMapper;
     }
 
-    @KafkaListener(topics = "${spring.kafka.consumer.topic.goal-completed}",
-            groupId = "${spring.kafka.consumer.group-id}",
+    @KafkaListener(topics = "${spring.kafka.consumers.completed-goals-consumer.topic}",
+            groupId = "${spring.kafka.consumers.completed-goals-consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
     public void listenForCompletedGoals(Goal goalCompleted) {
         try {
@@ -42,13 +42,14 @@ public class KafkaMessageConsumer {
         }
     }
 
-    @KafkaListener(topics = "${spring.kafka.consumer.topic.history}",
-            groupId = "${spring.kafka.consumer.group-id}",
+    @KafkaListener(topics = "${spring.kafka.consumers.history-consumer.topic}",
+            groupId = "${spring.kafka.consumers.history-consumer.group-id}",
             containerFactory = "stringKafkaListenerContainerFactory")
     public void listenForHistoryRequest(String sectionName) throws JsonProcessingException {
         try {
             List<Goal> goals = goalHistoryRepository.findAllBySectionName(sectionName);
-            String goalsJson = objectMapper.writeValueAsString(goals);
+            List<GoalDto> goalsDto = GoalMapper.toDtoList(goals);
+            String goalsJson = objectMapper.writeValueAsString(goalsDto);
             System.out.println("goals: " + goals.size());
             System.out.println("goalsJson: " + goalsJson);
 
