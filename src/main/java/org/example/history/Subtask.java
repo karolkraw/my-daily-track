@@ -8,13 +8,13 @@ import jakarta.persistence.*;
 public class Subtask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private String completedDate;
-    private String createdDate;
+    public Long id;
+    public String title;
+    public String description;
+    public String completedDate;
+    public String createdDate;
 
     @ManyToOne
     @JoinColumn(name = "goal_id")
-    private Goal goal;
+    public Goal goal;
 }
