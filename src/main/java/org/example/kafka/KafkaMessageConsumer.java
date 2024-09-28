@@ -31,11 +31,10 @@ public class KafkaMessageConsumer {
     @KafkaListener(topics = "${spring.kafka.consumers.completed-goals-consumer.topic}",
             groupId = "${spring.kafka.consumers.completed-goals-consumer.group-id}",
             containerFactory = "kafkaListenerContainerFactory")
-    public void listenForCompletedGoals(Goal goalCompleted) {
+    public void listenForCompletedGoals(GoalDto goalCompleted) {
         try {
-            logger.info("Received message: Title = {}, Description = {}", goalCompleted.title, goalCompleted.description);
-            goalHistoryRepository.save(goalCompleted);
-            // dodac date complete
+            logger.info("Received message: Title = {}, Description = {}", goalCompleted.getTitle(), goalCompleted.getDescription());
+            goalHistoryRepository.save(GoalMapper.mapDtoToGoal(goalCompleted));
         } catch (Exception e) {
             logger.error("Error processing message: {}", e.getMessage(), e);
             throw e;
@@ -48,7 +47,7 @@ public class KafkaMessageConsumer {
     public void listenForHistoryRequest(String sectionName) throws JsonProcessingException {
         try {
             List<Goal> goals = goalHistoryRepository.findAllBySectionName(sectionName);
-            List<GoalDto> goalsDto = GoalMapper.toDtoList(goals);
+            List<GoalDto> goalsDto = GoalMapper.goalsToDtoList(goals);
             String goalsJson = objectMapper.writeValueAsString(goalsDto);
             System.out.println("goals: " + goals.size());
             System.out.println("goalsJson: " + goalsJson);
