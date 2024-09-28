@@ -2,15 +2,18 @@ package org.example.history.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class GoalDto {
-    private String title;
-    private String description;
-    private String completedDate;
-    private String createdDate;
-    private List<SubtaskDto> subtasks;
+    String title;
+    String description;
+    String completedDate;
+    String createdDate;
+    String sectionName;
+    List<SubtaskDto> subtasks;
 }
