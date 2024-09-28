@@ -2,12 +2,14 @@ package org.example.history.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SubtaskDto {
-    private String title;
-    private String description;
-    private String completedDate;
-    private String createdDate;
+    String title;
+    String description;
+    String completedDate;
+    String createdDate;
 }
