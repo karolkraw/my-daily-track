@@ -2,7 +2,7 @@ package org.example.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.example.history.Goal;
+import org.example.history.dto.GoalDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -19,7 +19,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<String, Goal> messageConsumerFactory() {
+    public ConsumerFactory<String, GoalDto> messageConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -33,14 +33,14 @@ public class KafkaConsumerConfig {
         config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class.getName());
 
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Goal.class.getName());
+        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, GoalDto.class.getName());
 
         return new DefaultKafkaConsumerFactory<>(config);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Goal> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Goal> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, GoalDto> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, GoalDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(messageConsumerFactory());
         return factory;
     }
