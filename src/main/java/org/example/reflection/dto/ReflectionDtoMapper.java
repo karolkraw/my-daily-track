@@ -2,10 +2,11 @@ package org.example.reflection.dto;
 
 import org.example.reflection.Reflection;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.example.utils.DateUtils.convertLocalDateToString;
+import static org.example.utils.DateUtils.convertStringToLocalDate;
 
 public class ReflectionDtoMapper {
     public static ReflectionDto mapReflectionToDto(Reflection reflection) {
@@ -32,16 +33,5 @@ public class ReflectionDtoMapper {
         reflection.setContent(reflectionDto.content);
         reflection.setCreated(convertStringToLocalDate(reflectionDto.created));
         return reflection;
-    }
-
-    public static LocalDate convertStringToLocalDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate.parse(date, formatter);
-        return LocalDate.parse(date, formatter);
-    }
-
-    public static String convertLocalDateToString(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return date.format(formatter);
     }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.example.reflection.dto.ReflectionDtoMapper.convertStringToLocalDate;
+import static org.example.utils.DateUtils.convertStringToLocalDate;
 
 @Service
 public class ReflectionService {
