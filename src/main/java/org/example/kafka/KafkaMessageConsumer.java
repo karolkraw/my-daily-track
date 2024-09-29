@@ -6,6 +6,7 @@ import org.example.history.Goal;
 import org.example.history.GoalHistoryRepository;
 import org.example.history.dto.GoalDto;
 import org.example.history.dto.GoalMapper;
+import org.example.section.SectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -19,11 +20,15 @@ public class KafkaMessageConsumer {
     private static final Logger logger = LoggerFactory.getLogger(KafkaMessageConsumer.class);
 
     private final GoalHistoryRepository goalHistoryRepository;
+    private final SectionService sectionService;
+
     private final KafkaMessageProducer kafkaMessageProducer;
     private final ObjectMapper objectMapper;
 
-    public KafkaMessageConsumer(GoalHistoryRepository goalHistoryRepository, KafkaMessageProducer kafkaMessageProducer, ObjectMapper objectMapper) {
+    public KafkaMessageConsumer(GoalHistoryRepository goalHistoryRepository, SectionService sectionService,
+                                KafkaMessageProducer kafkaMessageProducer, ObjectMapper objectMapper) {
         this.goalHistoryRepository = goalHistoryRepository;
+        this.sectionService = sectionService;
         this.kafkaMessageProducer = kafkaMessageProducer;
         this.objectMapper = objectMapper;
     }
@@ -34,6 +39,8 @@ public class KafkaMessageConsumer {
     public void listenForCompletedGoals(GoalDto goalCompleted) {
         try {
             logger.info("Received message: Title = {}, Description = {}", goalCompleted.getTitle(), goalCompleted.getDescription());
+            Goal goal = GoalMapper.mapDtoToGoal(goalCompleted);
+            goal.setSection(sectionService.getSectionByName(goalCompleted.getSectionName()));
             goalHistoryRepository.save(GoalMapper.mapDtoToGoal(goalCompleted));
         } catch (Exception e) {
             logger.error("Error processing message: {}", e.getMessage(), e);
