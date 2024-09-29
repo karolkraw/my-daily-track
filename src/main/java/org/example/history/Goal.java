@@ -1,7 +1,6 @@
 package org.example.history;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +30,6 @@ public class Goal {
     @JoinColumn(name = "section_id")
     private Section section;
 
-    @OneToMany(mappedBy = "goal")
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.PERSIST)
     public List<Subtask> subtasks = new ArrayList<>();
 }
