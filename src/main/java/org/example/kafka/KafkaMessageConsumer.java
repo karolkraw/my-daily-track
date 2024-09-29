@@ -41,7 +41,7 @@ public class KafkaMessageConsumer {
             logger.info("Received message: Title = {}, Description = {}", goalCompleted.getTitle(), goalCompleted.getDescription());
             Goal goal = GoalMapper.mapDtoToGoal(goalCompleted);
             goal.setSection(sectionService.getSectionByName(goalCompleted.getSectionName()));
-            goalHistoryRepository.save(GoalMapper.mapDtoToGoal(goalCompleted));
+            goalHistoryRepository.save(goal);
         } catch (Exception e) {
             logger.error("Error processing message: {}", e.getMessage(), e);
             throw e;

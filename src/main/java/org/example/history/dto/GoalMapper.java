@@ -19,7 +19,7 @@ public class GoalMapper {
         goal.description = goalDto.getDescription();
         goal.createdDate = convertStringToLocalDate(goalDto.getCreatedDate());
         goal.completedDate = convertStringToLocalDate(goalDto.getCompletedDate());
-        goal.subtasks = goalDto.getSubtasks().stream().map(GoalMapper::dtoToSubtask).toList();
+        goal.subtasks = goalDto.getSubtasks().stream().map(subtaskDto -> dtoToSubtask(subtaskDto, goal)).toList();
         return goal;
     }
 
@@ -57,7 +57,7 @@ public class GoalMapper {
         return subtaskDto;
     }
 
-    public static Subtask dtoToSubtask(SubtaskDto subtaskDto) {
+    public static Subtask dtoToSubtask(SubtaskDto subtaskDto, Goal goal) {
         if (subtaskDto == null) {
             return null;
         }
@@ -67,6 +67,7 @@ public class GoalMapper {
         subtask.description = subtaskDto.description;
         subtask.createdDate = convertStringToLocalDate(subtaskDto.createdDate);
         subtask.completedDate = convertStringToLocalDate(subtaskDto.completedDate);
+        subtask.goal = goal;
 
         return subtask;
     }
