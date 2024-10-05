@@ -15,7 +15,6 @@ import java.util.List;
 public class GoalMessage {
     //@JsonProperty("title")
     private String title;
-
     //@JsonProperty("description")
     private String description;
     private String createdDate;
