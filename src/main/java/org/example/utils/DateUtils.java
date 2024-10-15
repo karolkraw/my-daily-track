@@ -8,7 +8,6 @@ public class DateUtils {
         if (date == null) return null;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate.parse(date, formatter);
         return LocalDate.parse(date, formatter);
     }
 
