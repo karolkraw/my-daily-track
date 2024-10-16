@@ -3,6 +3,7 @@ package org.example.section;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.reflection.Reflection;
 import org.example.streak.Streak;
 
 import java.time.LocalDateTime;
@@ -22,5 +23,5 @@ public class Section {
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<Streak> streaks = new ArrayList<>();
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    private List<Streak> reflections = new ArrayList<>();
+    private List<Reflection> reflections = new ArrayList<>();
 }
