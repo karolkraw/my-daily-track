@@ -46,21 +46,21 @@ public class ReflectionService {
 
     Optional<Reflection> getNextReflection(String sectionName, String date) {
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findFirstByCreatedAfterOrderByCreatedAsc(created);
+        return reflectionRepository.findFirstBySection_NameAndCreatedAfterOrderByCreatedAsc(sectionName, created);
     }
 
     Optional<Reflection> getPreviousReflection(String sectionName, String date) {
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findFirstByCreatedBeforeOrderByCreatedDesc(created);
+        return reflectionRepository.findFirstBySection_NameAndCreatedBeforeOrderByCreatedDesc(sectionName, created);
     }
 
     List<Reflection> getNextBatch(String sectionName, String date, int limit) {
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findByCreatedAfterOrderByCreatedAsc(created, PageRequest.of(0, limit));
+        return reflectionRepository.findBySection_NameAndCreatedAfterOrderByCreatedAsc(sectionName, created, PageRequest.of(0, limit));
     }
 
     List<Reflection> getPreviousBatch(String sectionName, String date, int limit) {
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findByCreatedBeforeOrderByCreatedDesc(created, PageRequest.of(0, limit));
+        return reflectionRepository.findBySection_NameAndCreatedBeforeOrderByCreatedDesc(sectionName, created, PageRequest.of(0, limit));
     }
 }

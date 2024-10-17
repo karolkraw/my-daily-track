@@ -12,8 +12,8 @@ public interface ReflectionRepository extends JpaRepository<Reflection, Long> {
     Long countBySectionName(String sectionName);
     Page<Reflection> findBySection_NameAndCreatedNot(String sectionName, LocalDate created, Pageable pageable);
     Optional<Reflection> findBySection_NameAndCreated(String sectionName, LocalDate created);
-    Optional<Reflection> findFirstByCreatedAfterOrderByCreatedAsc(LocalDate created);
-    Optional<Reflection> findFirstByCreatedBeforeOrderByCreatedDesc(LocalDate created);
-    List<Reflection> findByCreatedAfterOrderByCreatedAsc(LocalDate created, Pageable pageable);
-    List<Reflection> findByCreatedBeforeOrderByCreatedDesc(LocalDate created, Pageable pageable);
+    Optional<Reflection> findFirstBySection_NameAndCreatedAfterOrderByCreatedAsc(String sectionName, LocalDate created);
+    Optional<Reflection> findFirstBySection_NameAndCreatedBeforeOrderByCreatedDesc(String sectionName, LocalDate created);
+    List<Reflection> findBySection_NameAndCreatedAfterOrderByCreatedAsc(String sectionName, LocalDate created, Pageable pageable);
+    List<Reflection> findBySection_NameAndCreatedBeforeOrderByCreatedDesc(String sectionName, LocalDate created, Pageable pageable);
 }
