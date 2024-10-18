@@ -30,6 +30,6 @@ public class Goal {
     @JoinColumn(name = "section_id")
     private Section section;
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "goal", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     public List<Subtask> subtasks = new ArrayList<>();
 }
