@@ -32,4 +32,10 @@ public class SectionController {
         return ResponseEntity
                 .ok(sectionsDto);
     }
+
+    @DeleteMapping("{name}")
+    ResponseEntity<Object> deleteSection(@PathVariable String name) {
+        sectionService.deleteSection(name);
+        return ResponseEntity.noContent().build();
+    }
 }

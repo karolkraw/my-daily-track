@@ -22,7 +22,7 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, GoalDto> messageConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         //config.put(ConsumerConfig.GROUP_ID_CONFIG, "history-service-group");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -49,7 +49,7 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<String, String> stringConsumerFactory() {
         Map<String, Object> config = new HashMap<>();
 
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9093");
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         //config.put(ConsumerConfig.GROUP_ID_CONFIG, "history-service-group");
         config.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 

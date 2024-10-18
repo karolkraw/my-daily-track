@@ -36,9 +36,17 @@ public class StreakController {
                 .body(mapStreakToDto(created));
     }
 
-    @DeleteMapping("{name}")
-    ResponseEntity<Object> deleteStreak(@PathVariable String name) {
-        streakService.deleteStreak(name);
+    @DeleteMapping("{sectionName}/{name}")
+    ResponseEntity<Object> deleteStreak(@PathVariable String sectionName, @PathVariable String name) {
+        streakService.deleteStreak(name, sectionName);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("{sectionName}")
+    ResponseEntity<Object> resetStreak(@RequestBody StreakDto streakDto, @PathVariable String sectionName) {
+        Streak updatedStreak = streakService.resetStreak(mapDtoToStreak(streakDto), sectionName);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(mapStreakToDto(updatedStreak));
     }
 }
