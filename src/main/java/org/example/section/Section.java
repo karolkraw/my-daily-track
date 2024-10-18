@@ -3,6 +3,7 @@ package org.example.section;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.history.Goal;
 import org.example.reflection.Reflection;
 import org.example.streak.Streak;
 
@@ -24,4 +25,6 @@ public class Section {
     private List<Streak> streaks = new ArrayList<>();
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<Reflection> reflections = new ArrayList<>();
+    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
+    private List<Goal> goals = new ArrayList<>();
 }
