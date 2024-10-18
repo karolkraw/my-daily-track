@@ -31,4 +31,8 @@ logging:
         orm:
           jdbc:
             bind: TRACE
+jwt:
+  secret: 5999ba0174c3218da4013fb6a1062a698702a2956ccff0bf57b2f37aa849ec7f
+  token:
+    validity: '3600'
 
