@@ -45,7 +45,7 @@ public class StreakService {
 
     Streak resetStreak(Streak currentStreak, String sectionName) {
         Streak streak = streakRepository.findByNameAndSection_Name(currentStreak.name, sectionName);
-        streak.setStartDate(LocalDate.now());
+        streak.setStartDate(LocalDate.now().plusDays(1));
         streak.setDays(0);
         return streakRepository.save(streak);
     }
