@@ -17,10 +17,11 @@ CREATE TABLE IF NOT EXISTS streaks (
 CREATE TABLE IF NOT EXISTS reflections (
     id INT AUTO_INCREMENT PRIMARY KEY,
     content TEXT NOT NULL,
-    created DATE NOT NULL UNIQUE,
+    created DATE NOT NULL,
     section_id INT,
     CONSTRAINT fk_section_reflection FOREIGN KEY (section_id)
-            REFERENCES sections (id)
+            REFERENCES sections (id),
+    CONSTRAINT unique_created_per_section UNIQUE (created, section_id)  -- Composite unique constraint
 );
 
 CREATE TABLE IF NOT EXISTS goals (
