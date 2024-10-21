@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component
@@ -35,7 +37,7 @@ public class JwtTokenUtil {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token) {
@@ -49,12 +51,17 @@ public class JwtTokenUtil {
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
+        claims.put("jti", UUID.randomUUID().toString()); // Add a unique JWT ID (jti)
+        claims.put("token_type", "access"); // Add token type
+        claims.put("user_id", 1); // Add random user ID to the token
+
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, secret.getBytes(StandardCharsets.UTF_8)) // Convert secret to bytes
                 .compact();
     }
 
