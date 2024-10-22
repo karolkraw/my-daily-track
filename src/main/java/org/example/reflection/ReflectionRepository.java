@@ -1,5 +1,6 @@
 package org.example.reflection;
 
+import org.example.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReflectionRepository extends JpaRepository<Reflection, Long> {
-    Long countBySectionName(String sectionName);
-    Page<Reflection> findBySection_NameAndCreatedNot(String sectionName, LocalDate created, Pageable pageable);
-    Optional<Reflection> findBySection_NameAndCreated(String sectionName, LocalDate created);
-    Optional<Reflection> findFirstBySection_NameAndCreatedAfterOrderByCreatedAsc(String sectionName, LocalDate created);
-    Optional<Reflection> findFirstBySection_NameAndCreatedBeforeOrderByCreatedDesc(String sectionName, LocalDate created);
-    List<Reflection> findBySection_NameAndCreatedAfterOrderByCreatedAsc(String sectionName, LocalDate created, Pageable pageable);
-    List<Reflection> findBySection_NameAndCreatedBeforeOrderByCreatedDesc(String sectionName, LocalDate created, Pageable pageable);
+    Long countBySection_NameAndSection_User(String sectionName, User user);
+    Page<Reflection> findBySection_NameAndSection_UserAndCreatedNot(String sectionName, User user, LocalDate created, Pageable pageable);
+    Optional<Reflection> findBySection_NameAndSection_UserAndCreated(String sectionName, User user, LocalDate created);
+    Optional<Reflection> findFirstBySection_NameAndSection_UserAndCreatedAfterOrderByCreatedAsc(String sectionName, User user, LocalDate created);
+    Optional<Reflection> findFirstBySection_NameAndSection_UserAndCreatedBeforeOrderByCreatedDesc(String sectionName, User user, LocalDate created);
+    List<Reflection> findBySection_NameAndSection_UserAndCreatedAfterOrderByCreatedAsc(String sectionName, User user, LocalDate created, Pageable pageable);
+    List<Reflection> findBySection_NameAndSection_UserAndCreatedBeforeOrderByCreatedDesc(String sectionName, User user, LocalDate created, Pageable pageable);
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.history.Goal;
 import org.example.history.GoalHistoryRepository;
+import org.example.history.HistoryKafkaRequest;
 import org.example.history.dto.GoalDto;
 import org.example.history.dto.GoalMapper;
 import org.example.section.SectionService;
@@ -35,12 +36,13 @@ public class KafkaMessageConsumer {
 
     @KafkaListener(topics = "${spring.kafka.consumers.completed-goals-consumer.topic}",
             groupId = "${spring.kafka.consumers.completed-goals-consumer.group-id}",
-            containerFactory = "kafkaListenerContainerFactory")
+            containerFactory = "goalDtoKafkaListenerContainerFactory")
     public void listenForCompletedGoals(GoalDto goalCompleted) {
         try {
             logger.info("Received message: Title = {}, Description = {}", goalCompleted.getTitle(), goalCompleted.getDescription());
             Goal goal = GoalMapper.mapDtoToGoal(goalCompleted);
-            goal.setSection(sectionService.getSectionByName(goalCompleted.getSectionName()));
+            goal.setSection(sectionService.getSectionByNameAndUsername(
+                    goalCompleted.getSectionName(), goalCompleted.getUsername()));
             goalHistoryRepository.save(goal);
         } catch (Exception e) {
             logger.error("Error processing message: {}", e.getMessage(), e);
@@ -50,10 +52,10 @@ public class KafkaMessageConsumer {
 
     @KafkaListener(topics = "${spring.kafka.consumers.history-consumer.topic}",
             groupId = "${spring.kafka.consumers.history-consumer.group-id}",
-            containerFactory = "stringKafkaListenerContainerFactory")
-    public void listenForHistoryRequest(String sectionName) throws JsonProcessingException {
+            containerFactory = "historyKafkaRequestKafkaListenerContainerFactory")
+    public void listenForHistoryRequest(HistoryKafkaRequest request) throws JsonProcessingException {
         try {
-            List<Goal> goals = goalHistoryRepository.findAllBySectionName(sectionName);
+            List<Goal> goals = goalHistoryRepository.findAllBySectionNameAndUser_Username(request.getSectionName(), request.getUsername());
             List<GoalDto> goalsDto = GoalMapper.goalsToDtoList(goals);
             String goalsJson = objectMapper.writeValueAsString(goalsDto);
             System.out.println("goals: " + goals.size());
@@ -61,7 +63,7 @@ public class KafkaMessageConsumer {
 
             kafkaMessageProducer.sendGoals("retrieved-goals-topic", goalsJson);
 
-            logger.info("Successfully sent goals for section: {}", sectionName);
+            logger.info("Successfully sent goals for section: {}", request.getSectionName());
         } catch (Exception e) {
             logger.error("Error processing history request: {}", e.getMessage(), e);
             throw e;

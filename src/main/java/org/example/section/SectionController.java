@@ -3,6 +3,8 @@ package org.example.section;
 import org.example.section.dto.SectionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class SectionController {
 
     @GetMapping
     public ResponseEntity<List<SectionDto>> getAllSections() {
-        List<SectionDto> sectionsDto = mapSectionsToDto(sectionService.getAllSections());
+        List<SectionDto> sectionsDto = mapSectionsToDto(sectionService.getSections());
         return ResponseEntity
                 .ok(sectionsDto);
     }
