@@ -1,31 +1,52 @@
 package org.example.section;
 
+import org.example.user.User;
+import org.example.user.UserRepository;
+import org.example.user.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SectionService {
     private final SectionRepository sectionRepository;
-    SectionService(SectionRepository sectionRepository) {
+    private final UserService userService;
+    SectionService(SectionRepository sectionRepository, UserService userService) {
         this.sectionRepository = sectionRepository;
+        this.userService = userService;
     }
 
-    Section createSection(Section section) {
+    public Section createSection(Section section) {
+        User currentUser = userService.getCurrentUser();
+        section.setUser(currentUser);
         return sectionRepository.save(section);
     }
 
-    List<Section> getAllSections() {
-        return sectionRepository.findAll();
+    public List<Section> getSections() {
+        User currentUser = userService.getCurrentUser();
+        return sectionRepository.findByUser(currentUser);
     }
 
     public Section getSectionByName(String sectionName) {
-        return sectionRepository.findByName(sectionName);
+        User currentUser = userService.getCurrentUser();
+        return sectionRepository.findByNameAndUser(sectionName, currentUser)
+                .orElseThrow(() -> new RuntimeException("Section not found or does not belong to the current user"));
+    }
+
+    public Section getSectionByNameAndUsername(String sectionName, String username) {
+        return sectionRepository.findByNameAndUser_Username(sectionName, username)
+                .orElseThrow(() -> new RuntimeException("Section not found or does not belong to the current user"));
     }
 
     @Transactional
-    void deleteSection(String name) {
-        sectionRepository.deleteByName(name);
+    public void deleteSection(String name) {
+        User currentUser = userService.getCurrentUser();
+        Section section = sectionRepository.findByNameAndUser(name, currentUser)
+                .orElseThrow(() -> new RuntimeException("Section not found or does not belong to the current user"));
+        sectionRepository.delete(section);
     }
 }

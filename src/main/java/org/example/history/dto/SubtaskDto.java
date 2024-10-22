@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class SubtaskDto {
     String title;
     String description;
-    String completedDate;
     String createdDate;
+    String completedDate;
 }
