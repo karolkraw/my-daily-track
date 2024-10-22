@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.example.history.Goal;
 import org.example.reflection.Reflection;
 import org.example.streak.Streak;
+import org.example.user.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,4 +28,7 @@ public class Section {
     private List<Reflection> reflections = new ArrayList<>();
     @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
     private List<Goal> goals = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
