@@ -50,15 +50,15 @@ public class JwtTokenUtil {
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    private String doGenerateToken(Map<String, Object> claims, String username) {
         claims.put("jti", UUID.randomUUID().toString()); // Add a unique JWT ID (jti)
         claims.put("token_type", "access"); // Add token type
-        claims.put("user_id", 1); // Add random user ID to the token
-
+        //claims.put("user_id", 1); // Add random user ID to the token
+        claims.put("username", username);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + tokenValidity * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret.getBytes(StandardCharsets.UTF_8)) // Convert secret to bytes
