@@ -2,6 +2,8 @@ package org.example.reflection;
 
 import org.example.section.Section;
 import org.example.section.SectionService;
+import org.example.user.User;
+import org.example.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,49 +20,58 @@ import static org.example.utils.DateUtils.convertStringToLocalDate;
 public class ReflectionService {
     private final ReflectionRepository reflectionRepository;
     private final SectionService sectionService;
+    private final UserService userService;
 
-    ReflectionService(ReflectionRepository reflectionRepository, SectionService sectionService) {
+    ReflectionService(ReflectionRepository reflectionRepository, SectionService sectionService, UserService userService) {
         this.reflectionRepository = reflectionRepository;
         this.sectionService = sectionService;
+        this.userService = userService;
     }
-    Reflection createReflection(Reflection reflection, String sectionName) {
+    public Reflection createReflection(Reflection reflection, String sectionName) {
         Section section = sectionService.getSectionByName(sectionName);
         reflection.setSection(section);
         return reflectionRepository.save(reflection);
     }
 
-    Long getReflectionCount(String sectionName) {
-        return reflectionRepository.countBySectionName(sectionName);
+    public Long getReflectionCount(String sectionName) {
+        User currentUser = userService.getCurrentUser();
+        return reflectionRepository.countBySection_NameAndSection_User(sectionName, currentUser);
     }
 
-    Optional<Reflection> getReflectionByDate(String sectionName, String date) {
+    public Optional<Reflection> getReflectionByDate(String sectionName, String date) {
+        User currentUser = userService.getCurrentUser();
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findBySection_NameAndCreated(sectionName, created);
+        return reflectionRepository.findBySection_NameAndSection_UserAndCreated(sectionName, currentUser, created);
     }
 
-    List<Reflection> getReflections(String sectionName, int page, int pageSize) {
+    public List<Reflection> getReflections(String sectionName, int page, int pageSize) {
+        User currentUser = userService.getCurrentUser();
         Pageable pageable = PageRequest.of(page, pageSize, Sort.by("created").descending());
-        Page<Reflection> reflectionPage = reflectionRepository.findBySection_NameAndCreatedNot(sectionName, LocalDate.now(), pageable);
+        Page<Reflection> reflectionPage = reflectionRepository.findBySection_NameAndSection_UserAndCreatedNot(sectionName, currentUser, LocalDate.now(), pageable);
         return reflectionPage.getContent();
     }
 
-    Optional<Reflection> getNextReflection(String sectionName, String date) {
+    public Optional<Reflection> getNextReflection(String sectionName, String date) {
+        User currentUser = userService.getCurrentUser();
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findFirstBySection_NameAndCreatedAfterOrderByCreatedAsc(sectionName, created);
+        return reflectionRepository.findFirstBySection_NameAndSection_UserAndCreatedAfterOrderByCreatedAsc(sectionName, currentUser, created);
     }
 
-    Optional<Reflection> getPreviousReflection(String sectionName, String date) {
+    public Optional<Reflection> getPreviousReflection(String sectionName, String date) {
+        User currentUser = userService.getCurrentUser();
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findFirstBySection_NameAndCreatedBeforeOrderByCreatedDesc(sectionName, created);
+        return reflectionRepository.findFirstBySection_NameAndSection_UserAndCreatedBeforeOrderByCreatedDesc(sectionName, currentUser, created);
     }
 
-    List<Reflection> getNextBatch(String sectionName, String date, int limit) {
+    public List<Reflection> getNextBatch(String sectionName, String date, int limit) {
+        User currentUser = userService.getCurrentUser();
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findBySection_NameAndCreatedAfterOrderByCreatedAsc(sectionName, created, PageRequest.of(0, limit));
+        return reflectionRepository.findBySection_NameAndSection_UserAndCreatedAfterOrderByCreatedAsc(sectionName, currentUser, created, PageRequest.of(0, limit));
     }
 
-    List<Reflection> getPreviousBatch(String sectionName, String date, int limit) {
+    public List<Reflection> getPreviousBatch(String sectionName, String date, int limit) {
+        User currentUser = userService.getCurrentUser();
         LocalDate created = convertStringToLocalDate(date);
-        return reflectionRepository.findBySection_NameAndCreatedBeforeOrderByCreatedDesc(sectionName, created, PageRequest.of(0, limit));
+        return reflectionRepository.findBySection_NameAndSection_UserAndCreatedBeforeOrderByCreatedDesc(sectionName, currentUser, created, PageRequest.of(0, limit));
     }
 }
