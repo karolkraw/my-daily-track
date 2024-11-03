@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/my-daily-track
+    url: jdbc:mysql://mysql:3306/my-daily-track
     username: root
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,7 +15,7 @@ spring:
       history-consumer:
         topic: history-topic
         group-id: history-service-group
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9093
   jpa:
     properties:
       hibernate:
@@ -35,4 +35,12 @@ jwt:
   secret: 5999ba0174c3218da4013fb6a1062a698702a2956ccff0bf57b2f37aa849ec7f
   token:
     validity: '3600'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'  # Expose all actuator endpoints
+  endpoint:
+    mappings:
+      enabled: true  # Enable the mappings endpoint
 
