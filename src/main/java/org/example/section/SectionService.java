@@ -1,10 +1,8 @@
 package org.example.section;
 
+import org.example.section.exception.SectionAlreadyExistsException;
 import org.example.user.User;
-import org.example.user.UserRepository;
 import org.example.user.UserService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +20,10 @@ public class SectionService {
 
     public Section createSection(Section section) {
         User currentUser = userService.getCurrentUser();
+        Optional<Section> retrievedSection = sectionRepository.findByNameAndUser(section.getName(), currentUser);
+        if (retrievedSection.isPresent()) {
+            throw new SectionAlreadyExistsException("A section with this name already exists.");
+        }
         section.setUser(currentUser);
         return sectionRepository.save(section);
     }
