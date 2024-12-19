@@ -1,12 +1,11 @@
 ## Daily Track - Spring Boot core backend
 
-## Hosted Application
 Application is hosted on AWS and can be accessed [here](http://ec2-34-195-193-33.compute-1.amazonaws.com:4200/auth/login).  
 To explore the app with pre-defined data, you can log in using the demo account:
 - **Login:** demo
 - **Password:** demo
 
-## Frontend
+## Frontend 
 https://github.com/karolkraw/my-daily-track-frontend
 ## Django Backend service
 https://github.com/karolkraw/my-goals
